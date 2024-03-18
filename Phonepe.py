@@ -38,6 +38,9 @@ for state in agg_tran_list:
                 columns1["Quarter"].append(int(file.strip(".json")))
 
 
+Aggre_transaction = pd.DataFrame(columns1)
+
+
 
 #Aggregated_user
 
@@ -74,6 +77,9 @@ for state in agg_user_list:
 
             except:
                 pass
+
+Aggregated_user = pd.DataFrame(columns2)
+
            
 
 #Aggregated_insurance
@@ -110,6 +116,9 @@ for state in agg_insurance_list:
                 columns3["Quarter"].append(int(file.strip(".json")))
 
 
+Aggregated_insurance = pd.DataFrame(columns3)
+
+
 #Map_insurance 
 
 path4 = "C:/Users/viren/OneDrive/Desktop/IIT-MADARAS(GUVI)/Phonepay project/pulse/data/map/insurance/hover/country/india/state/"
@@ -141,3 +150,42 @@ for state in map_insurance_list:
                 columns4["States"].append(state)
                 columns4["Years"].append(year)
                 columns4["Quarter"].append(int(file.strip(".json")))
+
+
+Map_insurance = pd.DataFrame(columns4)
+
+
+
+#Map_transcation
+
+path5 = "C:/Users/viren/OneDrive/Desktop/IIT-MADARAS(GUVI)/Phonepay project/pulse/data/map/transaction/hover/country/india/state/"
+map_transaction_list = os.listdir(path5)
+
+columns5 = {"States":[],"Years":[],"Quarter":[],"Districts":[],"Transaction_count":[],"Transaction_amount":[]}
+
+for state in map_transaction_list:
+    current_states = path5 + state + "/"
+    map_year_list = os.listdir(current_states)
+
+    for year in map_year_list:
+        current_year = current_states + year + "/"
+        map_file_list = os.listdir(current_year)
+
+        for file in map_file_list:
+            current_file =   current_year + file
+            data = open(current_file,"r")
+
+            E = json.load(data)
+
+            for i in E["data"]["hoverDataList"]:
+                name = i["name"]
+                count = i["metric"][0]["count"]
+                amount = i["metric"][0]["amount"]
+                columns5["Districts"].append(name)
+                columns5["Transaction_count"].append(count)
+                columns5["Transaction_amount"].append(amount)
+                columns5["States"].append(state)
+                columns5["Years"].append(year)
+                columns5["Quarter"].append(int(file.strip(".json")))    
+
+Map_transcation = pd.DataFrame(columns5)
