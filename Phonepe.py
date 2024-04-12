@@ -93,7 +93,7 @@ table9 = cursor.fetchall()
 Top_user = pd.DataFrame(table9,columns=("States","Years","Quarter","Pincodes","RegisteredUsers"))
 
 
-# creating function for Transaction_amount_count
+# creating function for Transaction_amount_count year
 
 def Transaction_amount_count_Y(df,year):
 
@@ -148,7 +148,7 @@ def Transaction_amount_count_Y(df,year):
     return tran_amount_count_year
 
 
-# creating function for Transaction_amount_count
+# creating function for Transaction_amount_count quater
 
 def Transaction_amount_count_Y_Q(df, quarter):
     tran_amount_count_year = df[df["Quarter"] ==  quarter]
@@ -200,7 +200,7 @@ def Transaction_amount_count_Y_Q(df, quarter):
     return tran_amount_count_year
     
 
-
+# aggregated tran transcation type 
 def Aggre_tran_Transaction_type(df,state):
 
     tran_amount_count_year = df[df["States"] == state]
@@ -235,6 +235,21 @@ def Aggregated_user_plot_1(df,year):
     st.plotly_chart(fig_bar_1)
 
     return aggregated_user_year
+
+#Aggregated user analysis_2
+def Aggregated_user_plot_2(df,quarter):
+    aggregated_user_year_quarter= df[df["Quarter"]==quarter]
+    aggregated_user_year_quarter.reset_index(drop=True, inplace= True)
+
+
+    aggregated_user_year_quarter_group = pd.DataFrame(aggregated_user_year_quarter.groupby("Brands")["Transaction_count"].sum())
+    aggregated_user_year_quarter_group.reset_index(inplace=True)
+
+    fig_bar_1 = px.bar(aggregated_user_year_quarter_group,x="Brands",y="Transaction_count",title=f"Quarter{quarter} BRANDS and TRANSACTION COUNT",
+                    width=1000, color_discrete_sequence= px.colors.sequential.haline_r, hover_name="Brands")
+    st.plotly_chart(fig_bar_1)
+
+    return aggregated_user_year_quarter
 
 
 #Streamlit part
@@ -311,6 +326,16 @@ elif select == "DATA EXPLORATION":
 
                 years = st.slider("Select The Year",Aggregated_user["Years"].min(),Aggregated_user["Years"].max(),Aggregated_user["Years"].min())
              Aggregated_user_Y = Aggregated_user_plot_1(Aggregated_user,years)
+
+             col1,col2 = st.columns(2)
+             with col1:
+
+                quarter = st.slider("Select The Quarter", Aggregated_user["Quarter"].min(), Aggregated_user["Quarter"].max(),
+                                          Aggregated_user["Quarter"].min())
+            
+                Aggregated_user_Y_Q = Aggregated_user_plot_2(Aggregated_user, quarter) 
+
+
 
         
 
