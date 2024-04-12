@@ -128,7 +128,7 @@ def Transaction_amount_count_Y(df,year):
         states_name.sort()
 
     
-        fig_india_1 = px.choropleth(   tran_amount_count_year_group, geojson= data_1, locations= "States", featureidkey= "properties.ST_NM",
+        fig_india_1 = px.choropleth(tran_amount_count_year_group, geojson= data_1, locations= "States", featureidkey= "properties.ST_NM",
                                     color= "Transaction_amount", color_continuous_scale= "Rainbow", 
                                     range_color=(tran_amount_count_year_group["Transaction_amount"].min(),tran_amount_count_year_group["Transaction_amount"].max()),
                                     hover_name= "States", title = f"{year} TRANSACTION AMOUNT",fitbounds= "locations",
@@ -137,7 +137,7 @@ def Transaction_amount_count_Y(df,year):
         st.plotly_chart(fig_india_1)
 
     with col2:
-        fig_india_2 = px.choropleth(   tran_amount_count_year_group, geojson= data_1, locations= "States", featureidkey= "properties.ST_NM",
+        fig_india_2 = px.choropleth( tran_amount_count_year_group, geojson= data_1, locations= "States", featureidkey= "properties.ST_NM",
                                 color= "Transaction_count", color_continuous_scale= "Rainbow", 
                                 range_color=(tran_amount_count_year_group["Transaction_count"].min(),tran_amount_count_year_group["Transaction_count"].max()),
                                 hover_name= "States", title = f"{year} TRANSACTION COUNT",fitbounds= "locations",
@@ -221,6 +221,22 @@ def Aggre_tran_Transaction_type(df,state):
 
         st.plotly_chart(fig_pie_2)
 
+
+# Aggregated_user_analysis_1
+def Aggregated_user_plot_1(df,year):
+    aggregated_user_year= df[df["Years"]==2018]
+    aggregated_user_year.reset_index(drop=True, inplace= True)
+
+    aggregated_user_year_group = pd.DataFrame(aggregated_user_year.groupby("Brands")["Transaction_count"].sum())
+    aggregated_user_year_group.reset_index(inplace=True)
+
+    fig_bar_1 = px.bar(aggregated_user_year_group,x="Brands",y="Transaction_count",title=f"{year} BRANDS and TRANSACTION COUNT",
+                    width=800, color_discrete_sequence= px.colors.sequential.haline_r, hover_name="Brands")
+    st.plotly_chart(fig_bar_1)
+
+    return aggregated_user_year
+
+
 #Streamlit part
 
 st.set_page_config(layout="wide")
@@ -289,7 +305,14 @@ elif select == "DATA EXPLORATION":
             
 
         elif method == "User Analysis":
-            pass
+             
+             col1,col2 = st.columns(2)
+             with col1:
+
+                years = st.slider("Select The Year",Aggregated_user["Years"].min(),Aggregated_user["Years"].max(),Aggregated_user["Years"].min())
+             Aggregated_user_Y = Aggregated_user_plot_1(Aggregated_user,years)
+
+        
 
     with tab2:
         method_2 = st.radio("Select The Method",["Map Insurance", "Map Transaction", "Map User"])
