@@ -262,6 +262,26 @@ def Aggregated_user_plot_3(df,states):
     st.plotly_chart(fig_line_1)
 
 
+# MAP insurance districts 
+def Map_insurance_District(df,state):
+
+    tran_amount_count_year = df[df["States"] == state]
+    tran_amount_count_year.reset_index(drop = True, inplace= True)
+
+    tran_amount_count_year_group = tran_amount_count_year.groupby("Districts")[["Transaction_count","Transaction_amount"]].sum()
+    tran_amount_count_year_group.reset_index(inplace=True)
+
+   
+    fig_bar_1 = px.bar(tran_amount_count_year,x= "Transaction_amount", y= "Districts", orientation="h",height=600,
+                        title =f"{state.upper()} DISTRICT AND TRANSACTION AMOUNT",color_discrete_sequence= px.colors.sequential.Mint_r)
+    st.plotly_chart(fig_bar_1)
+
+    
+    fig_bar_2 = px.bar(tran_amount_count_year_group, x="Transaction_count", y="Districts", orientation="h",height=600,
+                    title=f"{state.upper()} DISTRICTS AND TRANSACTION COUNT",color_discrete_sequence= px.colors.sequential.Bluyl_r)
+    st.plotly_chart(fig_bar_2)
+
+
 
 #Streamlit part
 
@@ -280,9 +300,9 @@ elif select == "DATA EXPLORATION":
     tab1, tab2, tab3 = st.tabs(["Aggregated Analysis", "Map Analysis", "Top Analysis"])
 
     with tab1:
-        method = st.radio("Select The Method",["Insurance Analysis", "Transaction Analysis", "User Analysis"])
+        method = st.radio("Select The Method",["Aggregated Insurance","Aggregated Transaction","Aggregated User"])
 
-        if method == "Insurance Analysis":
+        if method == "Aggregated Insurance":
 
             col1,col2 = st.columns(2)
             with col1:
@@ -300,7 +320,7 @@ elif select == "DATA EXPLORATION":
 
 
 
-        elif method == "Transaction Analysis":
+        elif method == "Aggregated Transaction":
 
              col1,col2 = st.columns(2)
              with col1:
@@ -330,7 +350,7 @@ elif select == "DATA EXPLORATION":
              Aggre_tran_Transaction_type(Aggre_tran_amount_count_year_Q,states)
             
 
-        elif method == "User Analysis":
+        elif method == "Aggregated User":
              
              col1,col2 = st.columns(2)
              with col1:
@@ -353,17 +373,39 @@ elif select == "DATA EXPLORATION":
 
              Aggregated_user_plot_3( Aggregated_user_Y_Q,states)
 
-
-
-
-
         
 
     with tab2:
         method_2 = st.radio("Select The Method",["Map Insurance", "Map Transaction", "Map User"])
 
         if method_2 == "Map Insurance":
-            pass
+             
+             col1,col2 = st.columns(2)
+             with col1:
+
+                years = st.slider("Select The Year_map",Map_insurance["Years"].min(),Map_insurance["Years"].max(),Map_insurance["Years"].min())
+             Map_insur_tran_amount_count_year = Transaction_amount_count_Y(Map_insurance,years)
+
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State_map_insurance", Map_insur_tran_amount_count_year["States"].unique())
+
+             Map_insurance_District( Map_insur_tran_amount_count_year,states)
+
+             col1,col2 = st.columns(2)
+             with col1:
+
+              quarter = st.slider("Select The Quarter_map",  Map_insur_tran_amount_count_year["Quarter"].min(),  Map_insur_tran_amount_count_year["Quarter"].max(),
+                                         Map_insur_tran_amount_count_year["Quarter"].min())
+        
+             Map_insur_tran_amount_count_year_Q = Transaction_amount_count_Y_Q(Map_insur_tran_amount_count_year, quarter) 
+
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State_ty",Map_insur_tran_amount_count_year_Q["States"].unique())
+
+             Map_insurance_District(Map_insur_tran_amount_count_year_Q,states)
+
 
         elif method_2 == "Map Transaction":
             pass
