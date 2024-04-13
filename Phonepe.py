@@ -231,7 +231,7 @@ def Aggregated_user_plot_1(df,year):
     aggregated_user_year_group.reset_index(inplace=True)
 
     fig_bar_1 = px.bar(aggregated_user_year_group,x="Brands",y="Transaction_count",title=f"{year} BRANDS and TRANSACTION COUNT",
-                    width=800, color_discrete_sequence= px.colors.sequential.haline_r, hover_name="Brands")
+                    width=1000, color_discrete_sequence= px.colors.sequential.haline_r, hover_name="Brands")
     st.plotly_chart(fig_bar_1)
 
     return aggregated_user_year
@@ -245,11 +245,22 @@ def Aggregated_user_plot_2(df,quarter):
     aggregated_user_year_quarter_group = pd.DataFrame(aggregated_user_year_quarter.groupby("Brands")["Transaction_count"].sum())
     aggregated_user_year_quarter_group.reset_index(inplace=True)
 
-    fig_bar_1 = px.bar(aggregated_user_year_quarter_group,x="Brands",y="Transaction_count",title=f"Quarter{quarter} BRANDS and TRANSACTION COUNT",
-                    width=1000, color_discrete_sequence= px.colors.sequential.haline_r, hover_name="Brands")
+    fig_bar_1 = px.bar(aggregated_user_year_quarter_group,x="Brands",y="Transaction_count",title=f"Quarter-{quarter} BRANDS and TRANSACTION COUNT",
+                    width=1000, color_discrete_sequence= px.colors.sequential.algae, hover_name="Brands")
     st.plotly_chart(fig_bar_1)
 
     return aggregated_user_year_quarter
+
+
+#Aggregated_user analysis 3
+def Aggregated_user_plot_3(df,states):
+    aggregated_user_year_q_s = df[df["States"] == states]
+    aggregated_user_year_q_s.reset_index(drop=True, inplace=True)
+
+    fig_line_1 = px.line(aggregated_user_year_q_s, x="Brands", y= "Transaction_count",hover_data= ['Percentage'],
+                        title=f"{states.upper()}: BRANDS, TRANSACTION COUNT, PERCENTAGE",width = 1000, markers=True)
+    st.plotly_chart(fig_line_1)
+
 
 
 #Streamlit part
@@ -330,10 +341,19 @@ elif select == "DATA EXPLORATION":
              col1,col2 = st.columns(2)
              with col1:
 
-                quarter = st.slider("Select The Quarter", Aggregated_user["Quarter"].min(), Aggregated_user["Quarter"].max(),
-                                          Aggregated_user["Quarter"].min())
+                quarter = st.slider("Select The Quarter",  Aggregated_user_Y["Quarter"].min(), Aggregated_user_Y["Quarter"].max(),
+                                           Aggregated_user_Y["Quarter"].min())
             
-                Aggregated_user_Y_Q = Aggregated_user_plot_2(Aggregated_user, quarter) 
+                Aggregated_user_Y_Q = Aggregated_user_plot_2( Aggregated_user_Y, quarter) 
+
+                
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State",  Aggregated_user_Y_Q["States"].unique())
+
+             Aggregated_user_plot_3( Aggregated_user_Y_Q,states)
+
+
 
 
 
