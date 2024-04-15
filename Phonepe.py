@@ -282,6 +282,22 @@ def Map_insurance_District(df,state):
     st.plotly_chart(fig_bar_2)
 
 
+# MAP USER PLOT 1
+def map_user_plot_1(df,year):
+    Map_user_year= df[df["Years"]==year]
+    Map_user_year.reset_index(drop=True,inplace= True)
+
+
+    Map_user_year_group = Map_user_year.groupby("States")[["RegisteredUsers","AppOpens"]].sum()
+    Map_user_year_group.reset_index(inplace=True)
+
+    fig_line_1 = px.line(Map_user_year_group, x="States", y= ["RegisteredUsers","AppOpens"],
+                        title= f"{year} STATES REGISTERED USERS APPOPENS",width = 1000, height=800, markers=True)
+    st.plotly_chart(fig_line_1)
+
+    return Map_user_year
+
+
 
 #Streamlit part
 
@@ -408,10 +424,41 @@ elif select == "DATA EXPLORATION":
 
 
         elif method_2 == "Map Transaction":
-            pass
+            
+             col1,col2 = st.columns(2)
+             with col1:
+
+                years = st.slider("Select The Year_map",Map_transaction["Years"].min(),Map_transaction["Years"].max(),Map_transaction["Years"].min())
+             Map_transaction_tran_amount_count_year = Transaction_amount_count_Y(Map_transaction,years)
+
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State_map_transaction", Map_transaction_tran_amount_count_year["States"].unique())
+
+             Map_insurance_District(Map_transaction_tran_amount_count_year,states)
+
+             col1,col2 = st.columns(2)
+             with col1:
+
+              quarter = st.slider("Select The Quarter_map_transaction",Map_transaction_tran_amount_count_year["Quarter"].min(), Map_transaction_tran_amount_count_year["Quarter"].max(),
+                                         Map_transaction_tran_amount_count_year["Quarter"].min())
+        
+             Map_transaction_tran_amount_count_year_Q = Transaction_amount_count_Y_Q(Map_transaction_tran_amount_count_year, quarter) 
+
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State_ty",Map_transaction_tran_amount_count_year_Q["States"].unique())
+
+             Map_insurance_District(Map_transaction_tran_amount_count_year_Q,states)
+
 
         elif method_2 == "Map User":
-            pass
+            
+             col1,col2 = st.columns(2)
+             with col1:
+
+                years = st.slider("Select The Year_M",Map_user["Years"].min(),Map_user["Years"].max(),Map_user["Years"].min())
+             Map_user_Y = map_user_plot_1(Map_user,years)
 
     with tab3:
 
