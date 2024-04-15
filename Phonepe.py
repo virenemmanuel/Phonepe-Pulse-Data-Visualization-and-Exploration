@@ -298,6 +298,23 @@ def map_user_plot_1(df,year):
     return Map_user_year
 
 
+# MAP USER PLOT 2
+def map_user_plot_2(df,quarter):
+    Map_user_year_Q= df[df["Quarter"]==quarter]
+    Map_user_year_Q.reset_index(drop=True,inplace= True)
+
+
+    Map_user_year_Q_group = Map_user_year_Q.groupby("States")[["RegisteredUsers","AppOpens"]].sum()
+    Map_user_year_Q_group.reset_index(inplace=True)
+
+    fig_line_1 = px.line(Map_user_year_Q_group, x="States", y= ["RegisteredUsers","AppOpens"],
+                        title= f"Years-{df['Years'].min()}, {quarter}-QUARTER REGISTERED USERS APPOPENS",width = 1000, height=800, markers=True,
+                        color_discrete_sequence=px.colors.sequential.Rainbow_r)
+    st.plotly_chart(fig_line_1)
+
+    return Map_user_year_Q
+
+
 
 #Streamlit part
 
@@ -457,8 +474,14 @@ elif select == "DATA EXPLORATION":
              col1,col2 = st.columns(2)
              with col1:
 
-                years = st.slider("Select The Year_M",Map_user["Years"].min(),Map_user["Years"].max(),Map_user["Years"].min())
+                 years = st.slider("Select The Year_MU",Map_user["Years"].min(),Map_user["Years"].max(),Map_user["Years"].min())
              Map_user_Y = map_user_plot_1(Map_user,years)
+
+             col1,col2 = st.columns(2)
+             with col1:
+
+                quarters = st.slider("Select The Quarter_MU_Q",Map_user_Y["Quarter"].min(),Map_user_Y["Quarter"].max(),Map_user_Y["Quarter"].min())
+             Map_user_Y_Q = map_user_plot_2(Map_user_Y,quarters)
 
     with tab3:
 
