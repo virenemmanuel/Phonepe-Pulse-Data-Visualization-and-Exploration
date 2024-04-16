@@ -315,6 +315,22 @@ def map_user_plot_2(df,quarter):
     return Map_user_year_Q
 
 
+# MAP USER PLOT 3
+def map_user_plot_3(df,states):
+    map_user_year_quarter_state= df[df["States"]==states]
+    map_user_year_quarter_state.reset_index(drop=True, inplace= True)
+
+    fig_map_user_bar_1= px.bar(map_user_year_quarter_state, x= "Transaction_count", y= "Districts", orientation="h",
+                            title="REGISTERED USERS", height= 800, color_discrete_sequence= px.colors.sequential.OrRd_r)
+
+    st.plotly_chart(fig_map_user_bar_1)
+
+    fig_map_user_bar_2= px.bar(map_user_year_quarter_state, x= "Transaction_amount", y= "Districts", orientation="h",
+                            title="APPOPENS", height= 800, color_discrete_sequence= px.colors.sequential.Peach_r)
+
+    st.plotly_chart(fig_map_user_bar_2)
+
+    
 
 #Streamlit part
 
@@ -423,7 +439,7 @@ elif select == "DATA EXPLORATION":
              with col1:
                  states = st.selectbox("Select The State_map_insurance", Map_insur_tran_amount_count_year["States"].unique())
 
-             Map_insurance_District( Map_insur_tran_amount_count_year,states)
+             Map_insurance_District(Map_insur_tran_amount_count_year,states)
 
              col1,col2 = st.columns(2)
              with col1:
@@ -466,7 +482,7 @@ elif select == "DATA EXPLORATION":
              with col1:
                  states = st.selectbox("Select The State_ty",Map_transaction_tran_amount_count_year_Q["States"].unique())
 
-             Map_insurance_District(Map_transaction_tran_amount_count_year_Q,states)
+             map_user_plot_3(Map_transaction_tran_amount_count_year_Q,states)
 
 
         elif method_2 == "Map User":
@@ -482,6 +498,12 @@ elif select == "DATA EXPLORATION":
 
                 quarters = st.slider("Select The Quarter_MU_Q",Map_user_Y["Quarter"].min(),Map_user_Y["Quarter"].max(),Map_user_Y["Quarter"].min())
              Map_user_Y_Q = map_user_plot_2(Map_user_Y,quarters)
+
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State_ty",Map_user_Y_Q["States"].unique())
+
+             map_user_plot_3(Map_user_Y_Q,states)
 
     with tab3:
 
