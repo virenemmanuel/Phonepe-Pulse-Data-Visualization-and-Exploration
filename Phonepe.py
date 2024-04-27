@@ -180,7 +180,7 @@ def Transaction_amount_count_Y_Q(df, quarter):
 
         states_name.sort()
 
-        fig_india_1 = px.choropleth(   tran_amount_count_year_group, geojson= data_1, locations= "States", featureidkey= "properties.ST_NM",
+        fig_india_1 = px.choropleth(tran_amount_count_year_group, geojson= data_1, locations= "States", featureidkey= "properties.ST_NM",
                                     color= "Transaction_amount", color_continuous_scale= "Rainbow", 
                                     range_color=(tran_amount_count_year_group["Transaction_amount"].min(),tran_amount_count_year_group["Transaction_amount"].max()),
                                     hover_name= "States", title = f"{tran_amount_count_year['Years'].min()} YEAR {quarter} Quarter TRANSACTION AMOUNT",fitbounds= "locations",
@@ -189,7 +189,7 @@ def Transaction_amount_count_Y_Q(df, quarter):
         st.plotly_chart(fig_india_1)
 
     with col2:
-        fig_india_2 = px.choropleth(   tran_amount_count_year_group, geojson= data_1, locations= "States", featureidkey= "properties.ST_NM",
+        fig_india_2 = px.choropleth(tran_amount_count_year_group, geojson= data_1, locations= "States", featureidkey= "properties.ST_NM",
                                 color= "Transaction_count", color_continuous_scale= "Rainbow", 
                                 range_color=(tran_amount_count_year_group["Transaction_count"].min(),tran_amount_count_year_group["Transaction_count"].max()),
                                 hover_name= "States", title = f"{tran_amount_count_year['Years'].min()} YEAR {quarter} Quarter TRANSACTION COUNT",fitbounds= "locations",
@@ -224,7 +224,7 @@ def Aggre_tran_Transaction_type(df,state):
 
 # Aggregated_user_analysis_1
 def Aggregated_user_plot_1(df,year):
-    aggregated_user_year= df[df["Years"]==2018]
+    aggregated_user_year= df[df["Years"]==year]
     aggregated_user_year.reset_index(drop=True, inplace= True)
 
     aggregated_user_year_group = pd.DataFrame(aggregated_user_year.groupby("Brands")["Transaction_count"].sum())
@@ -330,6 +330,52 @@ def map_user_plot_3(df,states):
 
     st.plotly_chart(fig_map_user_bar_2)
 
+# TOP_INSURANCE_PLOT_!
+def Top_insurance_plot_1(df,state):
+    Top_insueance_year= df[df["States"]==state]
+    Top_insueance_year.reset_index(drop=True,inplace= True)
+
+    col1,col2 = st.columns(2)
+    with col1:
+        fig_Top_insurance_bar_1= px.bar(Top_insueance_year, x= "Quarter", y= "Transaction_amount",hover_data=["Pincodes"],
+                                title="TRANSACTION AMOUNT", height= 650,width=600, color_discrete_sequence= px.colors.sequential.OrRd_r)
+
+        st.plotly_chart(fig_Top_insurance_bar_1)
+
+    with col2:
+        fig_Top_insurance_bar_2= px.bar(Top_insueance_year, x= "Quarter", y= "Transaction_count",hover_data=["Pincodes"],
+                                title="TRANSACTION COUNT", height= 650,width=600, color_discrete_sequence= px.colors.sequential.Blackbody_r)
+
+        st.plotly_chart(fig_Top_insurance_bar_2)
+
+#TOP USER PLOT !:
+def Top_user_plot_1(df,year):
+    Top_user_year= df[df["Years"]==year]
+    Top_user_year.reset_index(drop=True, inplace= True)
+
+
+    Top_user_year_group = pd.DataFrame(Top_user_year.groupby(["States","Quarter"])["RegisteredUsers"].sum())
+    Top_user_year_group.reset_index(inplace=True)
+
+    fig_top_plot_1 = px.bar(Top_user_year_group,x="States",y="RegisteredUsers",color="Quarter",width=1000, height=800,
+                            color_discrete_sequence= px.colors.sequential.Greens_r,hover_name="States",
+                            title=f"{year} REGISTERED USERS")
+
+    st.plotly_chart( fig_top_plot_1)
+
+    return  Top_user_year
+
+
+# Top user_plot_2
+def Top_user_plot_2(df,state):
+    Top_user_year_state= df[df["States"]==state]
+    Top_user_year_state.reset_index(drop=True, inplace= True)
+
+
+    fig_top_plot_2 = px.bar(Top_user_year_state,x="Quarter",y="RegisteredUsers",title="REGISTERED USERS,PINCODES,QUARTER",
+                        width= 1000, height= 800, color="RegisteredUsers",hover_data = ["Pincodes"],color_continuous_scale=px.colors.sequential.Purp_r)
+
+    st.plotly_chart(fig_top_plot_2)
     
 
 #Streamlit part
@@ -510,13 +556,58 @@ elif select == "DATA EXPLORATION":
         method_3 = st.radio("Select The Method",["Top Insurance", "Top Transaction", "Top User"])
 
         if method_3 == "Top Insurance":
-            pass
+             col1,col2 = st.columns(2)
+             with col1:
+
+                years = st.slider("Select The Year_Top_INSURANCE",Top_Insurance["Years"].min(),Top_Insurance["Years"].max(),Top_Insurance["Years"].min())
+             Top_insur_tran_amount_count_year = Transaction_amount_count_Y(Top_Insurance,years)
+
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State_Top_INSURANCE",Top_insur_tran_amount_count_year["States"].unique())
+
+             Top_insurance_plot_1(Top_insur_tran_amount_count_year,states)
+
+             col1,col2 = st.columns(2)
+             with col1:
+
+                quarter = st.slider("Select The Quarter_TOP_NSURANCE_Q", Top_insur_tran_amount_count_year["Quarter"].min(), Top_insur_tran_amount_count_year["Quarter"].max(), Top_insur_tran_amount_count_year["Quarter"].min())
+             Top_insur_tran_amount_count_year_Q = Transaction_amount_count_Y_Q(Top_insur_tran_amount_count_year,quarter)
+
+
 
         elif method_3 == "Top Transaction":
-            pass
+             col1,col2 = st.columns(2)
+             with col1:
+
+                years = st.slider("Select The Year_Top_Transaction",Top_transaction["Years"].min(),Top_transaction["Years"].max(),Top_transaction["Years"].min())
+             Top_transaction_tran_amount_count_year = Transaction_amount_count_Y(Top_transaction,years)
+
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State_Top_Transaction",Top_transaction_tran_amount_count_year["States"].unique())
+
+             Top_insurance_plot_1(Top_transaction_tran_amount_count_year,states)
+
+             col1,col2 = st.columns(2)
+             with col1:
+
+                quarter = st.slider("Select The Quarter_TOP_NSURANCE_Q", Top_transaction_tran_amount_count_year["Quarter"].min(), Top_transaction_tran_amount_count_year["Quarter"].max(), Top_transaction_tran_amount_count_year["Quarter"].min())
+             Top_Transaction_tran_amount_count_year_Q = Transaction_amount_count_Y_Q(Top_transaction_tran_amount_count_year,quarter)
+
 
         elif method_3 == "Top User":
-            pass
+             col1,col2 = st.columns(2)
+             with col1:
+
+                years = st.slider("Select The Year_Top_user",Top_user["Years"].min(),Top_user["Years"].max(),Top_user["Years"].min())
+             Top_user_year = Top_user_plot_1(Top_user,years)
+
+             col1,col2 = st.columns(2)
+             with col1:
+                 states = st.selectbox("Select The State_Top_USER", Top_user_year["States"].unique())
+
+             Top_user_plot_2( Top_user_year,states)
 
 elif select == "TOP CHARTS":
     pass
