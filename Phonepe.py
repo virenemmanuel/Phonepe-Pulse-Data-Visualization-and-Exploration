@@ -773,8 +773,3 @@ elif select == "TOP CHARTS":
 
         top_chart_transaction_amount("aggregated_insurance")
         top_chart_transaction_count("aggregated_insurance")
-
-    elif question == "2. Transaction Amount and Count of Map Insurance.":
-        
-
-    
