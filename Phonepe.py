@@ -7,7 +7,6 @@ import pandas as pd
 import requests
 import json
 # import os
-# import json
 
 
 
@@ -377,6 +376,153 @@ def Top_user_plot_2(df,state):
 
     st.plotly_chart(fig_top_plot_2)
     
+#TOP CHART:
+#sql connection
+def top_chart_transaction_amount(table_name):
+
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_1
+    query1 = f'''SELECT states, sum(transaction_amount) AS transaction_amount
+                from {table_name}
+                GROUP BY states
+                ORDER BY transaction_amount desc
+                LIMIT 10;'''
+
+    cursor.execute(query1)
+    table_1 = cursor.fetchall()
+    mydb.commit()
+
+    df_1 = pd.DataFrame(table_1,columns=("states","transaction_amount"))
+
+    col1,col2 = st.columns(2)
+    with col1:
+
+        fig_amount_1 = px.bar(df_1, x="states", y="transaction_amount", title="TRANSACTION AMOUNT",hover_name="states",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl,height=650,width=600)
+        st.plotly_chart(fig_amount_1)
+
+
+    #sql connection
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_2
+    query2 = f'''SELECT states, sum(transaction_amount) AS transaction_amount
+                from {table_name}
+                GROUP BY states
+                ORDER BY transaction_amount
+                LIMIT 10;'''
+
+    cursor.execute(query2)
+    table_2 = cursor.fetchall()
+    mydb.commit()
+
+    df_2 = pd.DataFrame(table_2,columns=("states","transaction_amount"))
+    with col2:
+            fig_amount_2 = px.bar(df_2, x="states", y="transaction_amount", title="TRANSACTION AMOUNT",hover_name="states",
+                                color_discrete_sequence=px.colors.sequential.Aggrnyl_r, height=650,width=600)
+            st.plotly_chart(fig_amount_2)
+
+    #plot_3
+    query3 = f'''SELECT states, AVG(transaction_amount) AS transaction_amount
+                from {table_name}
+                GROUP BY states
+                ORDER BY transaction_amount;'''
+
+    cursor.execute(query3)
+    table_3 = cursor.fetchall()
+    mydb.commit()
+
+    df_3 = pd.DataFrame(table_3,columns=("states","transaction_amount"))
+
+    fig_amount_3 = px.bar(df_3, x="transaction_amount", y="states", title="TRANSACTION AMOUNT",hover_name="states", orientation="h",
+                        color_discrete_sequence=px.colors.sequential.Bluered_r, height=800,width=1300)
+    st.plotly_chart(fig_amount_3)
+
+
+#TOP chart
+#sql connection
+def top_chart_transaction_count(table_name):
+
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_1
+    query1 = f'''SELECT states, sum(transaction_count) AS transaction_count
+                from {table_name}
+                GROUP BY states
+                ORDER BY transaction_count desc
+                LIMIT 10;'''
+
+    cursor.execute(query1)
+    table_1 = cursor.fetchall()
+    mydb.commit()
+
+    df_1 = pd.DataFrame(table_1,columns=("states","transaction_count"))
+
+    col1,col2 = st.columns(2)
+    with col1:
+        fig_amount_1 = px.bar(df_1, x="states", y="transaction_count", title="TRANSACTION COUNT",hover_name="states",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl,height=650,width=600)
+        st.plotly_chart(fig_amount_1)
+
+
+    #sql connection
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_2
+    query2 = f'''SELECT states, sum(transaction_count) AS transaction_count
+                from {table_name}
+                GROUP BY states
+                ORDER BY transaction_count
+                LIMIT 10;'''
+
+    cursor.execute(query2)
+    table_2 = cursor.fetchall()
+    mydb.commit()
+
+    df_2 = pd.DataFrame(table_2,columns=("states","transaction_count"))
+    with col2:
+        fig_amount_2 = px.bar(df_2, x="states", y="transaction_count", title="TRANSACTION COUNT",hover_name="states",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl_r,height=650,width=600)
+        st.plotly_chart(fig_amount_2)
+
+    #plot_3
+    query3 = f'''SELECT states, AVG(transaction_count) AS transaction_count
+                from {table_name}
+                GROUP BY states
+                ORDER BY transaction_count;'''
+
+    cursor.execute(query3)
+    table_3 = cursor.fetchall()
+    mydb.commit()
+
+    df_3 = pd.DataFrame(table_3,columns=("states","transaction_count"))
+
+    fig_amount_3 = px.bar(df_3, x="transaction_count", y="states", title="TRANSACTION COUNT",hover_name="states", orientation="h",
+                        color_discrete_sequence=px.colors.sequential.Bluered_r, height=800, width=1300)
+    st.plotly_chart(fig_amount_3)
+
+
 
 #Streamlit part
 
@@ -610,4 +756,25 @@ elif select == "DATA EXPLORATION":
              Top_user_plot_2( Top_user_year,states)
 
 elif select == "TOP CHARTS":
-    pass
+
+    question = st.selectbox("Select the Question",["1.Transaction Amount and Count of Aggregated Insurance.",
+                                                   "2. Transaction Amount and Count of Map Insurance.",
+                                                   "3. Transaction Amount and Count of Top Insurance.",
+                                                   "4. Transaction Amount and Count of Aggregated Transaction.",
+                                                   "5. Transaction Amount and Count of Map transaction.",
+                                                   "6. Transaction Amount and Count of Top Transaction.",
+                                                   "7. Transaction Count of Aggregated User.",
+                                                   "8. Registered users of map User.",
+                                                   "9. App Opens of Map user.",
+                                                   "10. Regestered users of Top user."])
+    
+
+    if question == "1.Transaction Amount and Count of Aggregated Insurance.":
+
+        top_chart_transaction_amount("aggregated_insurance")
+        top_chart_transaction_count("aggregated_insurance")
+
+    elif question == "2. Transaction Amount and Count of Map Insurance.":
+        
+
+    
