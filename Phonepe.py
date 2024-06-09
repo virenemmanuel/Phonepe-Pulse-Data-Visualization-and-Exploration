@@ -403,7 +403,7 @@ def top_chart_transaction_amount(table_name):
     col1,col2 = st.columns(2)
     with col1:
 
-        fig_amount_1 = px.bar(df_1, x="states", y="transaction_amount", title="TRANSACTION AMOUNT",hover_name="states",
+        fig_amount_1 = px.bar(df_1, x="states", y="transaction_amount", title="TOP 10 OF TRANSACTION AMOUNT",hover_name="states",
                             color_discrete_sequence=px.colors.sequential.Aggrnyl,height=650,width=600)
         st.plotly_chart(fig_amount_1)
 
@@ -429,7 +429,7 @@ def top_chart_transaction_amount(table_name):
 
     df_2 = pd.DataFrame(table_2,columns=("states","transaction_amount"))
     with col2:
-            fig_amount_2 = px.bar(df_2, x="states", y="transaction_amount", title="TRANSACTION AMOUNT",hover_name="states",
+            fig_amount_2 = px.bar(df_2, x="states", y="transaction_amount", title="LAST 10 OF TRANSACTION AMOUNT",hover_name="states",
                                 color_discrete_sequence=px.colors.sequential.Aggrnyl_r, height=650,width=600)
             st.plotly_chart(fig_amount_2)
 
@@ -445,7 +445,7 @@ def top_chart_transaction_amount(table_name):
 
     df_3 = pd.DataFrame(table_3,columns=("states","transaction_amount"))
 
-    fig_amount_3 = px.bar(df_3, x="transaction_amount", y="states", title="TRANSACTION AMOUNT",hover_name="states", orientation="h",
+    fig_amount_3 = px.bar(df_3, x="transaction_amount", y="states", title="AVERAGE OF TRANSACTION AMOUNT",hover_name="states", orientation="h",
                         color_discrete_sequence=px.colors.sequential.Bluered_r, height=800,width=1300)
     st.plotly_chart(fig_amount_3)
 
@@ -476,7 +476,7 @@ def top_chart_transaction_count(table_name):
 
     col1,col2 = st.columns(2)
     with col1:
-        fig_amount_1 = px.bar(df_1, x="states", y="transaction_count", title="TRANSACTION COUNT",hover_name="states",
+        fig_amount_1 = px.bar(df_1, x="states", y="transaction_count", title="TOP 10 OF TRANSACTION COUNT",hover_name="states",
                             color_discrete_sequence=px.colors.sequential.Aggrnyl,height=650,width=600)
         st.plotly_chart(fig_amount_1)
 
@@ -502,7 +502,7 @@ def top_chart_transaction_count(table_name):
 
     df_2 = pd.DataFrame(table_2,columns=("states","transaction_count"))
     with col2:
-        fig_amount_2 = px.bar(df_2, x="states", y="transaction_count", title="TRANSACTION COUNT",hover_name="states",
+        fig_amount_2 = px.bar(df_2, x="states", y="transaction_count", title="LAST 10 OF TRANSACTION COUNT",hover_name="states",
                             color_discrete_sequence=px.colors.sequential.Aggrnyl_r,height=650,width=600)
         st.plotly_chart(fig_amount_2)
 
@@ -518,7 +518,7 @@ def top_chart_transaction_count(table_name):
 
     df_3 = pd.DataFrame(table_3,columns=("states","transaction_count"))
 
-    fig_amount_3 = px.bar(df_3, x="transaction_count", y="states", title="TRANSACTION COUNT",hover_name="states", orientation="h",
+    fig_amount_3 = px.bar(df_3, x="transaction_count", y="states", title="AVERAGE OF TRANSACTION COUNT",hover_name="states", orientation="h",
                         color_discrete_sequence=px.colors.sequential.Bluered_r, height=800, width=1300)
     st.plotly_chart(fig_amount_3)
 
@@ -771,5 +771,63 @@ elif select == "TOP CHARTS":
 
     if question == "1.Transaction Amount and Count of Aggregated Insurance.":
 
+        st.subheader("TRANSACTION AMOUNT")
         top_chart_transaction_amount("aggregated_insurance")
+
+        st.subheader("TRANSACTION COUNT")
         top_chart_transaction_count("aggregated_insurance")
+
+    
+    elif question == "2. Transaction Amount and Count of Map Insurance.":
+
+        st.subheader("TRANSACTION AMOUNT")
+        top_chart_transaction_amount("map_insurance")
+
+        st.subheader("TRANSACTION COUNT")
+        top_chart_transaction_count("map_insurance")
+
+
+    elif question == "3. Transaction Amount and Count of Top Insurance.":
+
+        st.subheader("TRANSACTION AMOUNT")
+        top_chart_transaction_amount("top_insurance")
+
+        st.subheader("TRANSACTION COUNT")
+        top_chart_transaction_count("top_insurance")
+
+    
+    elif question == "4. Transaction Amount and Count of Aggregated Transaction.":
+
+        st.subheader("TRANSACTION AMOUNT")
+        top_chart_transaction_amount("aggregated_transaction")
+
+        st.subheader("TRANSACTION COUNT")
+        top_chart_transaction_count("aggregated_transaction")
+
+
+    elif question == "5. Transaction Amount and Count of Map transaction.":
+
+        st.subheader("TRANSACTION AMOUNT")
+        top_chart_transaction_amount("map_transaction")
+
+        st.subheader("TRANSACTION COUNT")
+        top_chart_transaction_count("map_transaction")
+
+
+    elif question == "6. Transaction Amount and Count of Top Transaction.":
+
+        st.subheader("TRANSACTION AMOUNT")
+        top_chart_transaction_amount("top_transaction")
+
+        st.subheader("TRANSACTION COUNT")
+        top_chart_transaction_count("top_transaction")
+
+
+    elif question == "7. Transaction Count of Aggregated User.":
+
+        st.subheader("TRANSACTION COUNT")
+        top_chart_transaction_count("aggregated_user")
+
+        
+
+    
