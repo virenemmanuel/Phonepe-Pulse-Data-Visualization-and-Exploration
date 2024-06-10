@@ -6,6 +6,7 @@ import plotly.express as px
 import pandas as pd
 import requests
 import json
+from PIL import Image
 # import os
 
 
@@ -687,6 +688,76 @@ def top_chart_appopens(table_name,state):
 
 
 
+#sql connection for top chart REGISTEREDUSERS of TOP_USER for QUESTIONS:
+def top_chart_registered_users(table_name):
+
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_1
+    query1 = f'''-- #query for question 10
+                    select states, sum(registeredusers) as registeredusers
+                    from {table_name}
+                    group by states
+                    order by registeredusers desc
+                    limit 10'''
+
+    cursor.execute(query1)
+    table_1 = cursor.fetchall()
+    mydb.commit()
+
+    df_1 = pd.DataFrame(table_1,columns=("states","registeredusers"))
+
+    col1,col2 = st.columns(2)
+    with col1:
+    
+        fig_amount_1 = px.bar(df_1, x="states", y="registeredusers", title="TOP 10 OF REGISTEREDUSERS",hover_name="states",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl,height=650,width=600)
+        st.plotly_chart(fig_amount_1)
+
+
+    #plot_2
+    query2 = f'''select states, sum(registeredusers) as registeredusers
+                 from {table_name}
+                 group by states
+                 order by registeredusers 
+                 limit 10'''
+
+    cursor.execute(query2)
+    table_2 = cursor.fetchall()
+    mydb.commit()
+
+    df_2 = pd.DataFrame(table_2,columns=("states","registeredusers"))
+    
+    with col2:
+        fig_amount_2 = px.bar(df_2, x="states", y="registeredusers", title="LAST 10 OF REGISTEREDUSERS ",hover_name="states",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl_r, height=650,width=600)
+        st.plotly_chart(fig_amount_2)
+
+    
+    #plot_3
+
+    query3 = f'''select states, avg(registeredusers) as registeredusers
+                 from {table_name}
+                 group by states
+                 order by registeredusers ;'''
+    
+    cursor.execute(query3)
+    table_3 = cursor.fetchall()
+    mydb.commit()
+    
+    df_3 = pd.DataFrame(table_3, columns=("states", "registeredusers"))
+
+    fig_amount_3 = px.bar(df_3, y="states", x="registeredusers", title="AVARAGE OF REGISTEREDUSERS", hover_name="states", orientation="h",
+                          color_discrete_sequence=px.colors.sequential.Bluered_r,height=800,width=1000)
+
+    st.plotly_chart(fig_amount_3)
+
+
 
 
 #Streamlit part
@@ -699,7 +770,58 @@ with st.sidebar:
  select = option_menu("Main Menu",["HOME", "DATA EXPLORATION", "TOP CHARTS"])
 
 if select == "HOME":
-    pass
+     
+    
+    col1,col2= st.columns(2)
+
+    with col1:
+        st.header("PHONEPE")
+        st.subheader("INDIA'S BEST TRANSACTION APP")
+        st.markdown("PhonePe  is an Indian digital payments and financial technology company")
+        st.write("****FEATURES****")
+        st.write("****Credit & Debit card linking****")
+        st.write("****Bank Balance check****")
+        st.write("****Money Storage****")
+        st.write("****PIN Authorization****")
+        st.download_button("DOWNLOAD THE APP NOW", "https://www.phonepe.com/app-download/")
+    with col2:
+        st.image(Image.open(r"C:\Users\viren\OneDrive\Desktop\IIT-MADARAS(GUVI)\Phonepay project\images_phonepe.png"),width=600)
+
+    col3,col4= st.columns(2)
+    
+    with col3:
+        st.image(Image.open(r"C:\Users\viren\OneDrive\Desktop\IIT-MADARAS(GUVI)\Phonepay project\download_1.jpg"),width=600)
+
+    with col4:
+        st.write("****Easy Transactions****")
+        st.write("****One App For All Your Payments****")
+        st.write("****Your Bank Account Is All You Need****")
+        st.write("****Multiple Payment Modes****")
+        st.write("****PhonePe Merchants****")
+        st.write("****Multiple Ways To Pay****")
+        st.write("****1.Direct Transfer & More****")
+        st.write("****2.QR Code****")
+        st.write("****Earn Great Rewards****")
+
+    col5,col6= st.columns(2)
+
+    with col5:
+        st.markdown(" ")
+        st.markdown(" ")
+        st.markdown(" ")
+        st.markdown(" ")
+        st.markdown(" ")
+        st.markdown(" ")
+        st.markdown(" ")
+        st.markdown(" ")
+        st.markdown(" ")
+        st.write("****No Wallet Top-Up Required****")
+        st.write("****Pay Directly From Any Bank To Any Bank A/C****")
+        st.write("****Instantly & Free****")
+
+    with col6:
+        st.image(Image.open(r"C:\Users\viren\OneDrive\Desktop\IIT-MADARAS(GUVI)\Phonepay project\download.png"),width=600)
+
 
 elif select == "DATA EXPLORATION":
 
@@ -1005,6 +1127,11 @@ elif select == "TOP CHARTS":
         states = st.selectbox("SELECT THE STATE",Map_user["States"].unique())
         st.subheader("AAPOPENS")
         top_chart_appopens("Map_user",states)
+
+    elif question == "10. Regestered users of Top user.":
+
+        st.subheader("REGISTERED USERS")
+        top_chart_registered_users("top_user")
 
 
 
