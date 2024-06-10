@@ -377,7 +377,7 @@ def Top_user_plot_2(df,state):
     st.plotly_chart(fig_top_plot_2)
     
 #TOP CHART:
-#sql connection
+#sql connection for QUESTIONS:
 def top_chart_transaction_amount(table_name):
 
     mydb = psycopg2.connect (host = "localhost",
@@ -451,7 +451,7 @@ def top_chart_transaction_amount(table_name):
 
 
 #TOP chart
-#sql connection
+#sql connection for QUESTIONS:
 def top_chart_transaction_count(table_name):
 
     mydb = psycopg2.connect (host = "localhost",
@@ -521,6 +521,171 @@ def top_chart_transaction_count(table_name):
     fig_amount_3 = px.bar(df_3, x="transaction_count", y="states", title="AVERAGE OF TRANSACTION COUNT",hover_name="states", orientation="h",
                         color_discrete_sequence=px.colors.sequential.Bluered_r, height=800, width=1300)
     st.plotly_chart(fig_amount_3)
+
+
+
+#sql connection for top chart REGISTEREDUSERS for QUESTIONS:
+def top_chart_registered_users(table_name,state):
+
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_1
+    query1 = f'''select districts, sum(registeredusers) as registeredusers
+                 from {table_name}
+                 WHERE states= '{state}'
+                 GROUP BY districts 
+                 Order by registeredusers desc
+                 limit 10;'''
+
+    cursor.execute(query1)
+    table_1 = cursor.fetchall()
+    mydb.commit()
+
+    df_1 = pd.DataFrame(table_1,columns=("districts","registeredusers"))
+
+    col1,col2 = st.columns(2)
+    with col1:
+    
+        fig_amount_1 = px.bar(df_1, x="districts", y="registeredusers", title="TOP 10 OF REGISTERED USERS",hover_name="districts",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl,height=650,width=600)
+        st.plotly_chart(fig_amount_1)
+
+
+    #sql connection
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_2
+    query2 = f'''select districts, sum(registeredusers) as registeredusers
+                 from {table_name}
+                 WHERE states= '{state}'
+                 GROUP BY districts 
+                 Order by registeredusers 
+                 limit 10;'''
+
+    cursor.execute(query2)
+    table_2 = cursor.fetchall()
+    mydb.commit()
+
+    df_2 = pd.DataFrame(table_2,columns=("districts","registeredusers"))
+
+    with col2:
+    
+        fig_amount_2 = px.bar(df_2, x="districts", y="registeredusers", title="LAST 10 OF TRANSACTION AMOUNT",hover_name="districts",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl_r, height=650,width=600)
+        st.plotly_chart(fig_amount_2)
+
+    
+    #plot_3
+
+    query3 = f'''select districts, AVG(registeredusers) as registeredusers
+                 from {table_name}
+                 WHERE states= '{state}'
+                 GROUP BY districts 
+                 Order by registeredusers;'''
+    
+    cursor.execute(query3)
+    table_3 = cursor.fetchall()
+    mydb.commit()
+    
+    df_3 = pd.DataFrame(table_3, columns=("districts", "registeredusers"))
+
+    fig_amount_3 = px.bar(df_3, y="districts", x="registeredusers", title="AVARAGE OF REGISTERED USERS", hover_name="districts", orientation="h",
+                          color_discrete_sequence=px.colors.sequential.Bluered_r,height=800,width=1000)
+
+    st.plotly_chart(fig_amount_3)
+
+
+
+#sql connection for top chart APPOPENS for QUESTIONS:
+def top_chart_appopens(table_name,state):
+
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_1
+    query1 = f'''select districts, sum(appopens) as appopens
+                 from {table_name}
+                 WHERE states= '{state}'
+                 GROUP BY districts 
+                 Order by appopens desc
+                 limit 10;'''
+
+    cursor.execute(query1)
+    table_1 = cursor.fetchall()
+    mydb.commit()
+
+    df_1 = pd.DataFrame(table_1,columns=("districts","appopens"))
+
+    col1,col2 = st.columns(2)
+    with col1:
+    
+        fig_amount_1 = px.bar(df_1, x="districts", y="appopens", title="TOP 10 OF APPOPENS",hover_name="districts",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl,height=650,width=600)
+        st.plotly_chart(fig_amount_1)
+
+
+    #sql connection
+    mydb = psycopg2.connect (host = "localhost",
+                            user = "postgres",
+                            password = "roomno13",
+                            database = "phonepe_data",
+                            port = "5432")
+    cursor = mydb.cursor()
+
+    #plot_2
+    query2 = f'''select districts, sum(appopens) as appopens
+                 from {table_name}
+                 WHERE states= '{state}'
+                 GROUP BY districts 
+                 Order by appopens 
+                 limit 10;'''
+
+    cursor.execute(query2)
+    table_2 = cursor.fetchall()
+    mydb.commit()
+
+    df_2 = pd.DataFrame(table_2,columns=("districts","appopens"))
+    
+    with col2:
+        fig_amount_2 = px.bar(df_2, x="districts", y="appopens", title="LAST 10 OF APPOPENS ",hover_name="districts",
+                            color_discrete_sequence=px.colors.sequential.Aggrnyl_r, height=650,width=600)
+        st.plotly_chart(fig_amount_2)
+
+    
+    #plot_3
+
+    query3 = f'''select districts, AVG(appopens) as appopens
+                 from {table_name}
+                 WHERE states= '{state}'
+                 GROUP BY districts 
+                 Order by appopens;'''
+    
+    cursor.execute(query3)
+    table_3 = cursor.fetchall()
+    mydb.commit()
+    
+    df_3 = pd.DataFrame(table_3, columns=("districts", "appopens"))
+
+    fig_amount_3 = px.bar(df_3, y="districts", x="appopens", title="AVARAGE OF APPOPENS", hover_name="districts", orientation="h",
+                          color_discrete_sequence=px.colors.sequential.Bluered_r)
+
+    st.plotly_chart(fig_amount_3)
+
+
 
 
 
@@ -764,7 +929,7 @@ elif select == "TOP CHARTS":
                                                    "5. Transaction Amount and Count of Map transaction.",
                                                    "6. Transaction Amount and Count of Top Transaction.",
                                                    "7. Transaction Count of Aggregated User.",
-                                                   "8. Registered users of map User.",
+                                                   "8. Registered users of Map User.",
                                                    "9. App Opens of Map user.",
                                                    "10. Regestered users of Top user."])
     
@@ -829,5 +994,18 @@ elif select == "TOP CHARTS":
         top_chart_transaction_count("aggregated_user")
 
         
+    elif question == "8. Registered users of Map User.":
+
+        states = st.selectbox("SELECT THE STATE:", Map_user["States"].unique())
+        st.subheader("REGISTERED USERS")
+        top_chart_registered_users("Map_user",states)
+
+    elif question == "9. App Opens of Map user.":
+
+        states = st.selectbox("SELECT THE STATE",Map_user["States"].unique())
+        st.subheader("AAPOPENS")
+        top_chart_appopens("Map_user",states)
+
+
 
     
