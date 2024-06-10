@@ -771,61 +771,61 @@ elif select == "TOP CHARTS":
 
     if question == "1.Transaction Amount and Count of Aggregated Insurance.":
 
-        st.subheader("TRANSACTION AMOUNT")
+        st.subheader("TRANSACTION-AMOUNT OF AGGREGATED_INSURANCE:",)
         top_chart_transaction_amount("aggregated_insurance")
 
-        st.subheader("TRANSACTION COUNT")
+        st.subheader("TRANSACTION-COUNT OF AGGREGATED_INSURANCE:")
         top_chart_transaction_count("aggregated_insurance")
 
     
     elif question == "2. Transaction Amount and Count of Map Insurance.":
 
-        st.subheader("TRANSACTION AMOUNT")
+        st.subheader("TRANSACTION-AMOUNT OF MAP_INSURANCE:")
         top_chart_transaction_amount("map_insurance")
 
-        st.subheader("TRANSACTION COUNT")
+        st.subheader("TRANSACTION-COUNT OF MAP_INNSURANCE:")
         top_chart_transaction_count("map_insurance")
 
 
     elif question == "3. Transaction Amount and Count of Top Insurance.":
 
-        st.subheader("TRANSACTION AMOUNT")
+        st.subheader("TRANSACTION-AMOUNT OF TOP INSURANCE:")
         top_chart_transaction_amount("top_insurance")
 
-        st.subheader("TRANSACTION COUNT")
+        st.subheader("TRANSACTION-COUNT OF TOP INSURANCE:")
         top_chart_transaction_count("top_insurance")
 
     
     elif question == "4. Transaction Amount and Count of Aggregated Transaction.":
 
-        st.subheader("TRANSACTION AMOUNT")
+        st.subheader("TRANSACTION-AMOUNT OF AGGREGATED_TRANSACTION:")
         top_chart_transaction_amount("aggregated_transaction")
 
-        st.subheader("TRANSACTION COUNT")
+        st.subheader("TRANSACTION-COUNT OF AGGREGATED_TRANSACTION:")
         top_chart_transaction_count("aggregated_transaction")
 
 
     elif question == "5. Transaction Amount and Count of Map transaction.":
 
-        st.subheader("TRANSACTION AMOUNT")
+        st.subheader("TRANSACTION-AMOUNT OF MAP_TRANSACTION:")
         top_chart_transaction_amount("map_transaction")
 
-        st.subheader("TRANSACTION COUNT")
+        st.subheader("TRANSACTION-COUNT OF MAP_TRANSACTION:")
         top_chart_transaction_count("map_transaction")
 
 
     elif question == "6. Transaction Amount and Count of Top Transaction.":
 
-        st.subheader("TRANSACTION AMOUNT")
+        st.subheader("TRANSACTION-AMOUNT OF TOP_TRANSACTION:")
         top_chart_transaction_amount("top_transaction")
 
-        st.subheader("TRANSACTION COUNT")
+        st.subheader("TRANSACTION-COUNT OF TOP_TRANSACTION:")
         top_chart_transaction_count("top_transaction")
 
 
     elif question == "7. Transaction Count of Aggregated User.":
 
-        st.subheader("TRANSACTION COUNT")
+        st.subheader("TRANSACTION-COUNT OF AGGREGATED_USER:")
         top_chart_transaction_count("aggregated_user")
 
         
