@@ -526,7 +526,7 @@ def top_chart_transaction_count(table_name):
 
 
 #sql connection for top chart REGISTEREDUSERS for QUESTIONS:
-def top_chart_registered_users(table_name,state):
+def top_chart_registered_user(table_name,state):
 
     mydb = psycopg2.connect (host = "localhost",
                             user = "postgres",
@@ -1120,7 +1120,7 @@ elif select == "TOP CHARTS":
 
         states = st.selectbox("SELECT THE STATE:", Map_user["States"].unique())
         st.subheader("REGISTERED USERS")
-        top_chart_registered_users("Map_user",states)
+        top_chart_registered_user("Map_user",states)
 
     elif question == "9. App Opens of Map user.":
 
