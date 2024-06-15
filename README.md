@@ -80,3 +80,5 @@ Dataframe creation:-The code snippet establishes a connection to a PostgreSQL da
 9.Fetch Data from top_insurance Table:
 
 10.Fetch Data from top_transaction Table:
+
+11.Fetch Data from top_user Table:
