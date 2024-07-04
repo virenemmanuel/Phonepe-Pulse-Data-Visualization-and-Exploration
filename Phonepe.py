@@ -10,7 +10,6 @@ from PIL import Image
 # import os
 
 
-
 #Dataframe creation
 
 #sql connection
@@ -91,6 +90,357 @@ mydb.commit()
 table9 = cursor.fetchall()
 
 Top_user = pd.DataFrame(table9,columns=("States","Years","Quarter","Pincodes","RegisteredUsers"))
+
+
+# # sql table creation
+# # SQL Query_1
+# #Aggregated_insurance_table
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+
+# cursor = mydb.cursor()
+
+
+# creat_query_1 = '''CREATE TABLE if not exists aggregated_insurance(States varchar(255), 
+#                                                      Years int, 
+#                                                      Quarter int,
+#                                                      Transaction_type varchar(255),
+#                                                      Transaction_count bigint,
+#                                                      Transaction_amount bigint)'''
+
+# cursor.execute(creat_query_1)
+# mydb.commit()
+
+
+# #sql insert Query_1
+# insert_query_1 = '''INSERT INTO aggregated_insurance( States, 
+#                                                       Years, 
+#                                                       Quarter, 
+#                                                       Transaction_type, 
+#                                                       Transaction_count,
+#                                                       Transaction_amount)
+                                                      
+#                                                       values(%s,%s,%s,%s,%s,%s)'''
+
+
+# data = Aggregated_insurance.values.tolist()
+# cursor.executemany(insert_query_1,data)
+# mydb.commit()
+
+# # SQL TABLE QUERY_2
+# # Table Creation for Aggregated transaction
+
+# #sql connection
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+
+# cursor = mydb.cursor()
+
+# #Aggregated_transaction_table
+
+# creat_query_2 = '''CREATE TABLE if not exists aggregated_transaction(States varchar(255),
+#                                                      Years int,
+#                                                      Quarter int,
+#                                                      Transaction_type varchar(255),
+#                                                      Transaction_count bigint,
+#                                                      Transaction_amount bigint)'''
+
+# cursor.execute(creat_query_2)
+# mydb.commit()
+
+# insert_query_2 = '''INSERT INTO aggregated_transaction( States, 
+#                                                       Years, 
+#                                                       Quarter, 
+#                                                       Transaction_type, 
+#                                                       Transaction_count,
+#                                                       Transaction_amount)
+                                                      
+#                                                       values(%s,%s,%s,%s,%s,%s)'''
+
+# # these lines of code insert the data from the Aggregated_transacation
+# data = Aggregated_transacation.values.tolist()
+# cursor.executemany(insert_query_2,data)
+# mydb.commit()
+
+# # SQL TABLE QUERY_3
+# # Table Creation for Aggregated_user 
+# # sql connection 
+  
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+
+# cursor = mydb.cursor()
+
+# # Aggregated_user-table 
+# # CREATE TABLE if not exists aggregated_user: 
+# creat_query_3 = ''' CREATE TABLE if not exists aggregated_user( States varchar(255),
+#                                                                 Years int,
+#                                                                 Quarter int,
+#                                                                 Brands varchar(255),
+#                                                                 Transaction_count bigint,
+#                                                                 Percentage float)'''
+# # Table Creation Execution:
+# cursor.execute(creat_query_3)
+# mydb.commit()
+
+# # Data Insertion Query: 
+# insert_query_3 = '''INSERT INTO aggregated_user (States,
+#                                                  Years, 
+#                                                  Quarter, 
+#                                                  Brands, 
+#                                                  Transaction_count,
+#                                                  Percentage
+#                                                 )
+#                                                 values(%s,%s,%s,%s,%s,%s)'''
+# # Data Insertion Execution: 
+# data = Aggregated_user.values.tolist()
+# cursor.executemany(insert_query_3,data)
+# mydb.commit()
+
+# # SQL TABLE QUERY_4
+# # Table Creation for Map_insurance 
+# # Aggregated_user-table 
+
+# # sql connection 
+  
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+
+
+# cursor = mydb.cursor()
+
+
+
+# # This SQL query creates a table named Map_insurance if it doesn't already exist.
+# creat_query_4 = ''' CREATE TABLE if not exists Map_insurance( States varchar(255),
+#                                                                 Years int,
+#                                                                 Quarter int,
+#                                                                 Districts varchar(255),
+#                                                                 Transaction_count bigint,
+#                                                                 Transaction_amount bigint)'''
+
+# cursor.execute(creat_query_4)
+# mydb.commit()
+
+
+# insert_query_4 = '''INSERT INTO Map_insurance (States,
+#                                                Years, 
+#                                                Quarter, 
+#                                                Districts , 
+#                                                Transaction_count,
+#                                                Transaction_amount
+#                                                 )
+#                                                 values(%s,%s,%s,%s,%s,%s)'''
+
+# data = Map_insurance.values.tolist()
+# cursor.executemany(insert_query_4,data)
+# mydb.commit()
+
+# # SQL TABLE QUERY_5
+# # Table Creation for Map_transaction
+# # Aggregated_user-table 
+
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+
+
+# cursor = mydb.cursor()
+
+# # Aggregated_user-table 
+
+# creat_query_5 = ''' CREATE TABLE if not exists Map_transaction( States varchar(255),
+#                                                                 Years int,
+#                                                                 Quarter int,
+#                                                                 Districts varchar(255),
+#                                                                 Transaction_count bigint,
+#                                                                 Transaction_amount bigint)'''
+# # This code executes the SQL query creat_query_5,
+# cursor.execute(creat_query_5)
+# mydb.commit()
+
+# # This code snippet defines an SQL query (insert_query_5) 
+# insert_query_5 = '''INSERT INTO Map_transaction (States,
+#                                                Years, 
+#                                                Quarter, 
+#                                                Districts, 
+#                                                Transaction_count,
+#                                                Transaction_amount
+#                                                 )
+#                                                 values(%s,%s,%s,%s,%s,%s)'''
+
+# data = Map_transaction.values.tolist()
+# cursor.executemany(insert_query_5,data)
+# mydb.commit()
+
+# #SQL TABLE QUERY_6
+# # Table Creation for Map_user
+
+# # sql connection 
+#    # Establishes a Database Connection: 
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+
+# cursor = mydb.cursor()
+
+# # Aggregated_user-table 
+
+# creat_query_6 = ''' CREATE TABLE if not exists Map_user( States varchar(255),
+#                                                                 Years int,
+#                                                                 Quarter int,
+#                                                                 Districts varchar(255),
+#                                                                 RegisteredUsers bigint,
+#                                                                 AppOpens bigint)'''
+
+# cursor.execute(creat_query_6)
+# mydb.commit()
+
+
+# insert_query_6 = '''INSERT INTO Map_user (States,
+#                                           Years, 
+#                                           Quarter, 
+#                                           Districts, 
+#                                           RegisteredUsers,
+#                                           AppOpens
+#                                           )
+#                                           values(%s,%s,%s,%s,%s,%s)'''
+
+# data = Map_user.values.tolist()
+# cursor.executemany(insert_query_6,data)
+# mydb.commit()
+
+# #SQL TABLE QUERY_7
+# # Table Creation for Top_Insurance
+
+# # sql connection 
+#    # Establishes a Database Connection: 
+#    # It connects to a PostgreSQL database named phonepe_data running on localhost using the psycopg2 library.
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+
+# cursor = mydb.cursor()
+
+# # Top_Insurance-table 
+   
+# creat_query_7 = ''' CREATE TABLE if not exists Top_Insurance( States varchar(255),
+#                                                               Years int,
+#                                                               Quarter int,
+#                                                               Pincodes bigint,
+#                                                               Transaction_count bigint,
+#                                                               Transaction_amount bigint)'''
+
+# cursor.execute(creat_query_7)
+# mydb.commit()
+
+# # INSERT INTO Top_Insurance (States, Years, Quarter, Pincodes, Transaction_count, Transaction_amount):
+# insert_query_7 = '''INSERT INTO Top_Insurance (States,
+#                                                Years, 
+#                                                Quarter, 
+#                                                Pincodes, 
+#                                                Transaction_count,
+#                                                Transaction_amount
+#                                                 )
+#                                           values(%s,%s,%s,%s,%s,%s)'''
+
+# # INSERT INTO Top_Insurance (States, Years, Quarter, Pincodes, Transaction_count, Transaction_amount): 
+# data = Top_Insurance.values.tolist()
+# cursor.executemany(insert_query_7,data)
+# mydb.commit()
+
+# #SQL TABLE QUERY_8
+# # Table Creation for Top_transaction
+
+# # sql connection 
+
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+
+# cursor = mydb.cursor()
+
+# # Top_transaction-table 
+# creat_query_8 = ''' CREATE TABLE if not exists Top_transaction( States varchar(255),
+#                                                               Years int,
+#                                                               Quarter int,
+#                                                               Pincodes bigint,
+#                                                               Transaction_count bigint,
+#                                                               Transaction_amount bigint)'''
+
+# # This code executes the SQL query stored in creat_query_8, 
+# cursor.execute(creat_query_8)
+# mydb.commit()
+
+
+# insert_query_8 = '''INSERT INTO Top_transaction (States,
+#                                                Years, 
+#                                                Quarter, 
+#                                                Pincodes, 
+#                                                Transaction_count,
+#                                                Transaction_amount
+#                                                 )
+#                                           values(%s,%s,%s,%s,%s,%s)'''
+
+# data = Top_transaction.values.tolist()
+# cursor.executemany(insert_query_8,data)
+# mydb.commit()
+
+# #SQL TABLE QUERY_9
+# # Table Creation for Top_user
+
+# # sql connection 
+#   # Establishes a Database Connection: 
+# mydb = psycopg2.connect (host = "localhost",
+#                          user = "postgres",
+#                          password = "roomno13",
+#                          database = "phonepe_data",
+#                          port = "5432")
+# cursor = mydb.cursor()
+
+# # Top_user-table 
+
+# creat_query_9 = ''' CREATE TABLE if not exists Top_user( States varchar(255),
+#                                                          Years int,
+#                                                          Quarter int,
+#                                                          Pincodes bigint,
+#                                                          RegisteredUsers bigint
+#                                                          )'''
+
+# cursor.execute(creat_query_9)
+# mydb.commit()
+
+
+# insert_query_9 = '''INSERT INTO Top_user (States,
+#                                          Years, 
+#                                          Quarter, 
+#                                          Pincodes, 
+#                                          RegisteredUsers)
+#                                          values(%s,%s,%s,%s,%s)'''
+
+# data = Top_user.values.tolist()
+# cursor.executemany(insert_query_9,data)
+# mydb.commit()
 
 
 # creating function for Transaction_amount_count year
